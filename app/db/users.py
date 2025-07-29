@@ -1,32 +1,20 @@
-import sqlite3
-from app.core.config import settings
 from app.core.security import get_hashed_password
+from app.db.base import Base
 
 
-class Users:
-    def __init__(self, db_path=settings.DATABASE_URL):
-        self.db_path = db_path
-
-    @staticmethod
-    def connection(func):
-        def wrapper(self, *args, **kwargs):
-            with sqlite3.connect(self.db_path) as conn:
-                cursor = conn.cursor()
-                conn.commit()
-                return func(self, cursor, *args, **kwargs)
-        return wrapper
-
-    @connection
+class Users(Base):
+    @Base.connection
     def create_tables(self, cursor):
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS users(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT NOT NULL UNIQUE,
-                hashed_password TEXT NOT NULL
+                hashed_password TEXT NOT NULL,
+                profile_icon TEXT DEFAULT 'default.png'
             )
         ''')
 
-    @connection
+    @Base.connection
     def add_user(self, cursor, username: str, password: str):
         hashed = get_hashed_password(password)
         user = cursor.execute('''
@@ -40,7 +28,7 @@ class Users:
                 VALUES (?, ?)
             ''', (username, hashed))
 
-    @connection
+    @Base.connection
     def get_user(self, cursor, username: str):
         user = cursor.execute('''
             SELECT * FROM users

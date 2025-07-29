@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from app.core.config import settings
 from app.core.security import create_access_token, verify_token, oauth2_scheme
-from app.schemas.user import User, UserDataForm, Token
+from app.schemas.users import User, UserDataForm, Token
 from app.services.user_services import authenticate_user, register_user
 
 router = APIRouter()
