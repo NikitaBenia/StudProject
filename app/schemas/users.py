@@ -1,14 +1,18 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class User(BaseModel):
-    username: str
+    fullname: str
+    email: EmailStr
     hashed_password: str
 
-class UserDataForm(BaseModel):
-    username: str
+
+class UserAddDataForm(BaseModel):
+    fullname: str
+    email: EmailStr
     password: str
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
+
+class UserDataForm(BaseModel):
+    email: EmailStr
+    password: str

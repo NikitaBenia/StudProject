@@ -3,6 +3,7 @@ from uuid import uuid4
 from app.db.cars import cars
 from app.core.config import settings
 
+
 def add_car(title: str, price: float, photo: UploadFile):
     exist_car = cars.select_car(title=title)
     if exist_car:
