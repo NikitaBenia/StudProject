@@ -16,3 +16,11 @@ class UserAddDataForm(BaseModel):
 class UserDataForm(BaseModel):
     email: EmailStr
     password: str
+
+class UserProfile(BaseModel):
+    id: int
+    fullname: str
+    email: EmailStr
+    balance: float
+    hashed_password: str
+    profile_icon: str

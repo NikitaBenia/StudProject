@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Inventory - Hasanov Rentals LLC</title>
-    <link rel="stylesheet" href="static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/style.css" />
     <style>
       /* Custom styles for 3-column larger cards with visible buttons */
       .car-grid {
@@ -134,7 +134,7 @@
   <!-- Inventory Header -->
   <section class="inventory-header-video">
     <video autoplay muted loop playsinline>
-      <source src="static/images/media/fleet.mp4" type="video/mp4" />
+      <source src="/static/images/media/fleet.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
     <div class="header-overlay">
@@ -145,66 +145,17 @@
 
   <!-- Car Grid - 3 per row -->
   <section class="car-grid">
+    {% for car in cars %}
     <div class="car-card">
-      <img src="static/images/pictures/urus.jpg" alt="Lamborghini Urus">
+      <img src="/static/images/autos/{{ car['photo'] }}" alt="{{ car['title'] }}">
       <div class="car-card-content">
-        <h3>Lamborghini Urus</h3>
-        <p>The ultimate luxury SUV with 641hp twin-turbo V8 engine. 0-60mph in 3.5 seconds. Features full leather interior, adaptive air suspension, and state-of-the-art infotainment system.</p>
-        <div class="car-price">$899/day</div>
-        <a href="cars/urus.html" class="btn">View Details</a>
+        <h3>{{ car['title'] }}</h3>
+        <p>{{ car['description'] }}</p>
+        <div class="car-price">{{ car['price'] }}/day</div>
+        <a href="/inventory/{{ car['id'] }}" class="btn">View Details</a>
       </div>
     </div>
-    
-    <div class="car-card">
-      <img src="static/images/pictures/tesla.png" alt="Tesla Model S">
-      <div class="car-card-content">
-        <h3>Tesla Model S Plaid</h3>
-        <p>1020hp electric hyper-sedan with 396mi range. 0-60mph in 1.99 seconds. Includes full self-driving capability, yoke steering, and 22-speaker audio system.</p>
-        <div class="car-price">$499/day</div>
-        <a href="cars/tesla.html" class="btn">View Details</a>
-      </div>
-    </div>
-    
-    <div class="car-card">
-      <img src="static/images/pictures/bmw.jpg" alt="BMW 5 Series">
-      <div class="car-card-content">
-        <h3>BMW M550i xDrive</h3>
-        <p>523hp luxury sedan with adaptive suspension and premium executive package. Features Nappa leather, heated/cooled seats, and panoramic sunroof.</p>
-        <div class="car-price">$349/day</div>
-        <a href="cars/bmw.html" class="btn">View Details</a>
-      </div>
-    </div>
-    
-    <div class="car-card">
-      <img src="static/images/pictures/audi.jpg" alt="Audi A6">
-      <div class="car-card-content">
-        <h3>Audi Q8 Prestige</h3>
-        <p>444hp turbo V6 with quattro all-wheel drive and Valcona leather interior. Features virtual cockpit plus, head-up display, and night vision assistant.</p>
-        <div class="car-price">$399/day</div>
-        <a href="cars/audi.html" class="btn">View Details</a>
-      </div>
-    </div>
-
-    
-    <div class="car-card">
-      <img src="static/images/pictures/mercedes.jpg" alt="Mercedes-Benz E-Class">
-      <div class="car-card-content">
-        <h3>Mercedes-AMG E53</h3>
-        <p>429hp mild-hybrid with AMG performance exhaust and Burmester sound system. Includes MBUX infotainment, ambient lighting, and driver assistance package.</p>
-        <div class="car-price">$379/day</div>
-        <a href="cars/mercedes.html" class="btn">View Details</a>
-      </div>
-    </div>
-    
-    <div class="car-card">
-      <img src="static/images/pictures/range-rover.jpg" alt="Range Rover Sport">
-      <div class="car-card-content">
-        <h3>Range Rover Sport SVR</h3>
-        <p>575hp supercharged V8 luxury SUV with premium Windsor leather seats. Includes terrain response system, 23" wheels, and adaptive dynamics.</p>
-        <div class="car-price">$599/day</div>
-        <a href="cars/range-rover.html" class="btn">View Details</a>
-      </div>
-    </div>
+    {% endfor %}
   </section>
 
   <!-- Footer -->

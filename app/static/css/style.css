@@ -581,4 +581,341 @@
   border-bottom: none;
   margin-bottom: 0;
   padding-bottom: 0;
-} 
+}
+.search-bar-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.search-bar {
+  display: flex;
+  background: white;
+  border-radius: 50px;
+  padding: 10px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  gap: 10px;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background-color: #f2f2f2;
+}
+
+.search-button {
+  background: #6200ea;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background: #4b00c2;
+}
+.search-container {
+  background-color: var(--background-light);
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  position: relative;
+  z-index: 900;
+}
+/* City select dropdown styling */
+.city-select {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: #f2f2f2;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  outline: none;
+  min-width: 110px;
+}
+
+.city-select:hover,
+.city-select:focus {
+  background-color: #e0e0e0;
+}
+
+/* Keep consistent height with inputs and button */
+.search-bar input[type="date"],
+.search-bar input[type="time"],
+.city-select {
+  height: 36px;
+}
+
+/* Adjust gap between elements */
+.search-bar > * {
+  /* All children of .search-bar get some spacing */
+  margin-right: 10px;
+}
+
+.search-bar > *:last-child {
+  margin-right: 0;
+}
+/* Center the whole search bar container */
+.search-bar-wrapper {
+  display: flex;
+  justify-content: center; /* centers horizontally */
+  padding: 20px;
+}
+
+/* Make the background outside the search bar black */
+.search-container {
+  background-color: black;  /* black outside search bar */
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  position: relative;
+  z-index: 900;
+}
+
+/* Keep the search bar itself white and unchanged */
+.search-bar {
+  background: white;
+}
+/* Ensure hero section positioning context */
+.hero {
+  position: relative;
+}
+
+/* Search container overlaid on hero */
+.search-container {
+  position: absolute;
+  top: 20px; /* adjust vertical position */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0,0,0,0.7); /* semi-transparent black */
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  z-index: 10; /* above hero video & overlay */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  width: fit-content;
+  max-width: 95vw; /* responsive width */
+}
+
+/* Search bar styling inside the container */
+.search-bar {
+  background: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 50px;
+  padding: 10px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Keep consistent heights */
+.search-bar input[type="text"],
+.search-bar input[type="date"],
+.search-bar input[type="time"],
+.city-select {
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: #f2f2f2;
+  outline: none;
+}
+
+/* City select dropdown styling */
+.city-select {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.city-select:hover,
+.city-select:focus {
+  background-color: #e0e0e0;
+}
+
+/* Search button style */
+.search-button {
+  background: #6200ea;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.search-button:hover {
+  background: #4b00c2;
+}
+
+/* Responsive adjustments if needed */
+@media (max-width: 600px) {
+  .search-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .search-bar input[type="text"],
+  .search-bar input[type="date"],
+  .search-bar input[type="time"],
+  .city-select,
+  .search-button {
+    flex: 1 1 45%;
+    min-width: 140px;
+  }
+}
+/* Remove black background by making search-container transparent and absolutely positioned over hero */
+.search-container {
+  position: absolute;
+  top: 20px;              /* Adjust vertical position as you like */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;            /* Above hero video and overlay */
+  background-color: transparent !important; /* Remove background color */
+  box-shadow: none !important;              /* Remove box shadow */
+  padding: 0;              /* Remove extra padding */
+  width: fit-content;
+  max-width: 95vw;         /* Keep responsive */
+}
+
+/* Keep search-bar styling for white rounded box */
+.search-bar {
+  background: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 50px;
+  padding: 10px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Center search-bar wrapper */
+.search-bar-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.profile-container {
+  max-width: 850px;
+  margin: 3rem auto;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  color: var(--text-color);
+  font-family: 'Montserrat', sans-serif;
+}
+
+.profile-header {
+  background: var(--primary-color);
+  color: var(--white);
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.profile-header img {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--border-radius);
+  object-fit: cover;
+}
+
+.profile-user-details h2 {
+  font-size: 2.2rem;
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+}
+
+.profile-user-details p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  color: var(--background-light);
+}
+
+.balance {
+  background: var(--secondary-color);
+  color: var(--primary-color);
+  padding: 0.6rem 1.2rem;
+  font-size: 1.1rem;
+  border-radius: 6px;
+  display: inline-block;
+  font-weight: bold;
+}
+
+.profile-rental {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.profile-rental img {
+  width: 100%;
+  max-width: 400px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+}
+
+.profile-rental-details {
+  flex: 1;
+  background-color: var(--primary-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  color: var(--white);
+}
+
+.profile-rental-details h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.profile-rental-details p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: var(--background-light);
+}
+
+.rental-dates {
+  display: inline-block;
+  background-color: var(--primary-dark);
+  color: var(--white);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+footer {
+  background-color: var(--secondary-color);
+  color: var(--white);
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.9rem;
+  margin-top: 4rem;
+}
+
+@media (max-width: 600px) {
+  .profile-header,
+  .profile-rental {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-header img {
+    width: 100px;
+    height: 100px;
+  }
+}

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ car['title'] }} - Hasanov Rentals LLC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+    :root {
+      --primary-color: #c59d5f;
+      --primary-dark: #a67c2f;
+      --secondary-color: #121212;
+      --background-light: #f5f3ef;
+      --text-color: #2c2c2c;
+      --white: #ffffff;
+      --shadow: 0 6px 18px rgba(0,0,0,0.1);
+      --border-radius: 12px;
+    }
+
+    body {
+      font-family: 'Playfair Display', serif;
+      background-color: var(--background-light);
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: var(--secondary-color);
+      color: var(--white);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: var(--white);
+      font-weight: 500;
+      transition: color 0.3s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    nav ul li a:hover {
+      color: var(--primary-color);
+    }
+
+    .auth-buttons {
+      margin-left: auto;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn {
+      background-color: var(--primary-color);
+      color: var(--white);
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: var(--border-radius);
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--primary-color);
+      color: var(--white);
+    }
+
+    .car-detail-header {
+      position: relative;
+      height: 400px;
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .car-detail-header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+      z-index: 1;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    }
+
+    .car-detail-header p {
+      font-size: 1.3rem;
+      max-width: 800px;
+      margin: 0 auto;
+      z-index: 1;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    }
+
+    .background-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 0;
+      opacity: 1;
+    }
+
+    .car-detail-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .car-detail-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (max-width: 768px) {
+      .car-detail-content {
+        flex-direction: column;
+      }
+    }
+
+    .car-detail-image {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      max-height: 500px;
+      border-radius: 8px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .car-detail-info {
+      padding: 2.5rem;
+    }
+
+    .car-detail-info h2 {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .car-detail-price {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin: 1.5rem 0;
+      display: block;
+    }
+
+    .car-detail-description {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--text-color);
+      margin-bottom: 2rem;
+    }
+
+    .car-detail-specs {
+      margin: 2rem 0;
+    }
+
+    .car-detail-specs h3 {
+      font-size: 1.4rem;
+      color: var(--secondary-color);
+      margin-bottom: 1rem;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 0.5rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .car-detail-specs ul {
+      list-style: none;
+    }
+
+    .car-detail-specs li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .car-detail-specs li strong {
+      font-weight: 600;
+      width: 150px;
+      color: var(--secondary-color);
+      display: inline-block;
+    }
+
+    .car-rental-form {
+      background: var(--white);
+      padding: 2.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 3rem;
+    }
+
+    .car-rental-form h3 {
+      font-size: 1.6rem;
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--secondary-color);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+    }
+
+    .price-summary {
+      background: var(--background-light);
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      margin: 2rem 0;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .price-summary span {
+      color: var(--primary-color);
+    }
+
+    footer {
+      background-color: var(--secondary-color);
+      color: var(--white);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .car-detail-header h1 {
+        font-size: 2.2rem;
+      }
+
+      .car-detail-header p {
+        font-size: 1.1rem;
+      }
+
+      .car-detail-info {
+        padding: 1.5rem;
+      }
+
+      .car-detail-image {
+        height: 350px;
+      }
+
+      nav {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .auth-buttons {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <h1>Hasanov Rentals LLC</h1>
+      <ul>
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/inventory/">Inventory</a></li>
+        <li><a href="/insurance.html">Insurance</a></li>
+        <li><a href="/terms.html">Terms</a></li>
+        <li><a href="/contact.html">Contact Us</a></li>
+      </ul>
+      <div class="auth-buttons">
+        <a href="/login.html" class="btn btn-outline">Login</a>
+        <a href="/signup.html" class="btn">Sign Up</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="car-detail-header">
+    <h1>{{ car['title'] }}</h1>
+    <p>Experience the power of excellence</p>
+  </section>
+
+  <div class="car-detail-container">
+    <div class="car-detail-content">
+      <img src="/static/images/autos/{{ car['photo'] }}" alt="{{ car['title'] }}" class="car-detail-image">
+
+      <div class="car-detail-info">
+        <h2>{{ car['title'] }}</h2>
+        <p class="car-detail-price">${{ car['price'] }}/day</p>
+
+        <div class="car-detail-description">
+          <p>{{ car['description'] }}</p>
+        </div>
+
+        <div class="car-detail-specs">
+          <h3>Performance Specifications</h3>
+          <ul>
+            <li><strong>Motors:</strong> {{ car_specs['engine'] }}</li>
+            <li><strong>Horsepower:</strong> {{ car_specs['horsepower'] }}</li>
+            <li><strong>Torque:</strong> {{ car_specs['torque'] }}</li>
+            <li><strong>0–60 mph:</strong> {{ car_specs['mph'] }}</li>
+            <li><strong>Top Speed:</strong> {{ car_specs['top_speed'] }}</li>
+            <li><strong>Transmission:</strong> {{ car_specs['transmission'] }}</li>
+            <li><strong>Drivetrain:</strong> {{ car_specs['drivetrain'] }}</li>
+            <li><strong>Hybrid System:</strong> {{ car_specs['hybrid_system'] }}</li>
+          </ul>
+        </div>
+
+        <div class="car-detail-specs">
+          <h3>Technology Features</h3>
+          <ul>
+            <li><strong>Technology:</strong> {{ car_specs['technology'] }}</li>
+            <li><strong>Audio:</strong> {{ car_specs['audio'] }}</li>
+            <li><strong>Interior:</strong> {{ car_specs['interior'] }}</li>
+            <li><strong>Lighting:</strong> {{ car_specs['lighting'] }}</li>
+            <li><strong>Comfort:</strong> {{ car_specs['comfort'] }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="car-rental-form">
+      <h3>Reserve This Vehicle</h3>
+      <form id="rentalForm">
+        <div class="form-group">
+          <label for="start-date">Rental Start Date</label>
+          <input type="date" id="start-date" name="start-date" required>
+        </div>
+        <div class="form-group">
+          <label for="end-date">Rental End Date</label>
+          <input type="date" id="end-date" name="end-date" required>
+        </div>
+        <div class="price-summary" id="priceDisplay">
+          Total Rental Price: $0
+        </div>
+        <button type="submit" class="btn">Reserve Now</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Hasanov Rentals LLC. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const dailyRate = {{ car['price'] }};
+    const startDateInput = document.getElementById('start-date');
+    const endDateInput = document.getElementById('end-date');
+    const priceDisplay = document.getElementById('priceDisplay');
+    const form = document.getElementById('rentalForm');
+
+    const today = new Date().toISOString().split('T')[0];
+    startDateInput.min = today;
+    endDateInput.min = today;
+
+    function calculatePrice() {
+      const startDate = new Date(startDateInput.value);
+      const endDate = new Date(endDateInput.value);
+      if (startDate && endDate && startDate <= endDate) {
+        const diffTime = Math.abs(endDate - startDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        const totalPrice = diffDays * dailyRate;
+        priceDisplay.textContent = `Total Rental Price: $${totalPrice} (${diffDays} days)`;
+      } else {
+        priceDisplay.textContent = 'Total Rental Price: $0';
+      }
+    }
+
+    startDateInput.addEventListener('change', calculatePrice);
+    endDateInput.addEventListener('change', calculatePrice);
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for your reservation! We will contact you shortly.');
+    });
+  </script>
+</body>
+</html>

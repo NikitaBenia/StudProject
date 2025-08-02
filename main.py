@@ -26,12 +26,14 @@ def read_main(request: Request):
     if not user:
         return templates.TemplateResponse('index.html', {'request': request})
 
-    # Sends user's profile photo path to the template for frontend display
-    return templates.TemplateResponse('index.html', {'request': request, 'photo': user['photo']})
+    # Sends user's profile photo path to the template for frontend display and email for profile page link
+    return templates.TemplateResponse(
+        'index.html', {'request': request, 'photo': user['profile_icon']}
+    )
 
 
-@app.get("/profile", response_class=HTMLResponse)
-def profile_page(request: Request, user: str = Depends(get_current_user)):
+@app.get("/protected", response_class=HTMLResponse)
+def protected_auth(request: Request, user: str = Depends(get_current_user)):
     return templates.TemplateResponse("index.html", {"request": request, "user": user})
 
 

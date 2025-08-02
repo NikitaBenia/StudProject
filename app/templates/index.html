@@ -4,97 +4,115 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Hasanov Rentals LLC</title>
-    <link rel="stylesheet" href="static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/style.css" />
   </head>
-<body>
-  <!-- Navigation Bar -->
-  <header>
-    <h1>Hasanov Rentals LLC</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="inventory.html">Inventory</a></li>
-        <li><a href="insurance.html">Insurance</a></li>
-        <li><a href="terms.html">Terms</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-      </ul>
-      <div class="auth-buttons">
-      {% if photo %}
-        <img src="/static/images/avatars/{{ photo }}" alt="Аватар" style="width: 50px; height: 50px;">
-      {% else %}
-        <a href="/login">Войти</a>
-      {% endif %}
+  <body>
+    <!-- Header -->
+    <header>
+      <h1>Hasanov Rentals LLC</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="/inventory">Inventory</a></li>
+          <li><a href="insurance.html">Insurance</a></li>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+        <div class="auth-buttons">
+          {% if photo and email %}
+            <a href="/profile">
+              <img src="/static/images/avatars/{{ photo }}" alt="Аватар" style="width: 50px; height: 50px; border-radius: 50%;">
+            </a>
+          {% else %}
+            <a href="/login" class="btn btn-outline">Login</a>
+            <a href="/signup" class="btn">Sign Up</a>
+          {% endif %}
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <video autoplay muted loop playsinline class="hero-video">
+        <source src="static/images/media/hero-video.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div class="hero-overlay"></div>
+
+      <!-- Search Bar overlay on hero -->
+      <div class="search-container">
+        <div class="search-bar-wrapper">
+          <div class="search-bar">
+            <input type="text" placeholder="City, airport, address or hotel" />
+            <button class="search-button">🔍</button>
+            <select class="city-select" aria-label="Choose city">
+              <option value="chicago">Chicago</option>
+              <option value="miami">Miami</option>
+            </select>
+          </div>
+        </div>
       </div>
-    </nav>
-  </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <video autoplay muted loop playsinline class="hero-video">
-      <source src="static/images/media/hero-video.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <h2>Drive in Style with Hasanov Rentals LLC</h2>
-      <p>Premium car rental in Chicago with a fleet of luxury and exotic vehicles.</p>
-      <a href="inventory.html" class="btn">Browse Fleet</a>
-    </div>
-  </section>
+      <div class="hero-content">
+        <h2>Drive in Style with Hasanov Rentals LLC</h2>
+        <p>Premium car rental in Chicago with a fleet of luxury and exotic vehicles.</p>
+        <a href="inventory.html" class="btn">Browse Fleet</a>
+      </div>
+    </section>
 
-<!-- Benefits Section -->
-<section class="benefits-section">
-  <div class="benefits-grid">
-    <div class="benefit-card">
-      <img src="static/images/pictures/luxury.jpg" alt="Luxury Vehicles" />
-      <h3>Luxury Vehicles</h3>
-      <p>Choose from elite exotic and premium models that make a statement.</p>
-    </div>
-    <div class="benefit-card">
-      <img src="static/images/pictures/insurance.jpg" alt="Flexible Insurance" />
-      <h3>Flexible Insurance</h3>
-      <p>Use our full-coverage plans or submit your own to cut costs.</p>
-    </div>
-    <div class="benefit-card">
-      <img src="static/images/pictures/term.jpg" alt="Transparent Terms" />
-      <h3>Transparent Terms</h3>
-      <p>No hidden fees. Clear rental rules and customer-first policies.</p>
-    </div>
-    <div class="benefit-card">
-      <img src="static/images/pictures/support.jpg" alt="24/7 Support" />
-      <h3>24/7 Support</h3>
-      <p>We’re here around the clock — before, during, and after your rental.</p>
-    </div>
-    <div class="benefit-card">
-      <img src="static/images/pictures/pickup.jpg" alt="Hustle-Free Pickup" />
-      <h3>Hustle-Free Pickup</h3>
-      <p>We deliver to you — hotel, airport, or home. No wait time. No stress.</p>
-    </div>
-    <div class="benefit-card">
-      <img src="static/images/pictures/switch.jpg" alt="Car Switch Option" />
-      <h3>Car Switch Option</h3>
-      <p>Change your car during your rental — just call, we handle the rest.</p>
-    </div>
-  </div>
-</section>
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <img src="static/images/pictures/luxury.jpg" alt="Luxury Vehicles" />
+          <h3>Luxury Vehicles</h3>
+          <p>Choose from elite exotic and premium models that make a statement.</p>
+        </div>
+        <div class="benefit-card">
+          <img src="static/images/pictures/insurance.jpg" alt="Flexible Insurance" />
+          <h3>Flexible Insurance</h3>
+          <p>Use our full-coverage plans or submit your own to cut costs.</p>
+        </div>
+        <div class="benefit-card">
+          <img src="static/images/pictures/term.jpg" alt="Transparent Terms" />
+          <h3>Transparent Terms</h3>
+          <p>No hidden fees. Clear rental rules and customer-first policies.</p>
+        </div>
+        <div class="benefit-card">
+          <img src="static/images/pictures/support.jpg" alt="24/7 Support" />
+          <h3>24/7 Support</h3>
+          <p>We’re here around the clock — before, during, and after your rental.</p>
+        </div>
+        <div class="benefit-card">
+          <img src="static/images/pictures/pickup.jpg" alt="Hustle-Free Pickup" />
+          <h3>Hustle-Free Pickup</h3>
+          <p>We deliver to you — hotel, airport, or home. No wait time. No stress.</p>
+        </div>
+        <div class="benefit-card">
+          <img src="static/images/pictures/switch.jpg" alt="Car Switch Option" />
+          <h3>Car Switch Option</h3>
+          <p>Change your car during your rental — just call, we handle the rest.</p>
+        </div>
+      </div>
+    </section>
 
-<!-- About Section -->
-<section class="about-section">
-  <div class="content-container">
-    <h2>About Hasanov Rentals</h2>
-    <p>
-      Hasanov Rentals LLC was founded to redefine premium car rental in Chicago. 
-      With a passion for design, service, and excellence, we offer an elite fleet of exotic and executive vehicles paired with unmatched hospitality.
-    </p>
-    <p>
-      From seamless online booking and flexible insurance options to professional support and hotel delivery — every detail is designed to exceed expectations.
-    </p>
-  </div>
-</section>
+    <!-- About Section -->
+    <section class="about-section">
+      <div class="content-container">
+        <h2>About Hasanov Rentals</h2>
+        <p>
+          Hasanov Rentals LLC was founded to redefine premium car rental in Chicago.
+          With a passion for design, service, and excellence, we offer an elite fleet of exotic and executive vehicles paired with unmatched hospitality.
+        </p>
+        <p>
+          From seamless online booking and flexible insurance options to professional support and hotel delivery — every detail is designed to exceed expectations.
+        </p>
+      </div>
+    </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Hasanov Rentals LLC. All rights reserved.</p>
-  </footer>
-</body>
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 Hasanov Rentals LLC. All rights reserved.</p>
+    </footer>
+  </body>
 </html>

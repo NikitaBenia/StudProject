@@ -9,10 +9,12 @@ class Users(Base):
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 fullname TEXT NOT NULL UNIQUE,
                 email TEXT NOT NULL UNIQUE,
+                balance FLOAT DEFAULT 0.0,
                 hashed_password TEXT NOT NULL,
                 profile_icon TEXT DEFAULT 'default.jpg'
             )
         ''')
+
 
     @Base.connection
     def add_user(self, cursor, fullname: str, email: str, password: str):
@@ -30,6 +32,7 @@ class Users(Base):
             ''', (fullname, email, hashed))
             return hashed
 
+
     @Base.connection
     def get_user(self, cursor, email: str):
         user = cursor.execute('''
@@ -37,9 +40,11 @@ class Users(Base):
             WHERE email = ?
         ''', (email,)).fetchone()
 
-        if user:
-            return {'fullname': user[1], 'email': user[2], 'hashed_password': user[3], 'photo': user[4]}
-        return None
+        if not user:
+            return None
+        columns = [column[0] for column in cursor.description]
+        return dict(zip(columns, user))
+
 
     @Base.connection
     def change_icon(self, cursor, email: str, photo: str):

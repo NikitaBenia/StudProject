@@ -1,26 +1,31 @@
-from pydantic import EmailStr
 from datetime import timedelta
+
+from pydantic import EmailStr
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import RedirectResponse, HTMLResponse
+from fastapi import APIRouter, HTTPException, Request, Cookie, Form
+
+from app.db.users import users
 from app.schemas.users import User
 from app.core.config import settings
-from fastapi.responses import RedirectResponse
-from fastapi.templating import Jinja2Templates
 from app.core.security import create_access_token, verify_token
-from fastapi import APIRouter, HTTPException, Request, Cookie, Form
 from app.services.user_services import authenticate_user, register_user
 
 
 router = APIRouter()
-
 templates = Jinja2Templates(directory=settings.TEMPLATES_URL)
 
 
+# Display login form (GET /login)
 @router.get('/login')
 def login_form(request: Request):
     return templates.TemplateResponse('login.html', {'request': request})
 
 
+# Handle login form submission, generate JWT, and set it as a cookie
 @router.post('/token')
-def login(email: EmailStr = Form(...), password: str = Form(...)):
+def login(email: EmailStr = Form(...),
+          password: str = Form(...)):
     user = authenticate_user(email, password)
     if not user:
         raise HTTPException(status_code=401, detail='User data is invalid')
@@ -42,6 +47,7 @@ def login(email: EmailStr = Form(...), password: str = Form(...)):
     return response
 
 
+# Decode and verify token from cookie, return payload or raise exception
 def get_current_user(token: str = Cookie(None)):
     if not token:
         raise HTTPException(status_code=401, detail="Not authenticated")
@@ -51,13 +57,28 @@ def get_current_user(token: str = Cookie(None)):
     return payload
 
 
+# Display registration form (GET /register)
 @router.get('/register')
 def register_form(request: Request):
     return templates.TemplateResponse('signup.html', {'request': request})
 
 
+# Handle registration form submission, redirect to login
 @router.post('/register', response_model=User)
-def register(fullname: str = Form(...), email: EmailStr = Form(...), password: str = Form(...)):
+def register(fullname: str = Form(...),
+             email: EmailStr = Form(...),
+             password: str = Form(...)):
     register_user(fullname, email, password)
     response = RedirectResponse('/login', status_code=303)
     return response
+
+
+# Display user profile page after verifying JWT from cookie
+@router.get('/profile', response_class=HTMLResponse)
+def profile_page(request: Request, token: str = Cookie(None)):
+    payload = get_current_user(token)
+    email = payload.get("sub")
+    user = users.get_user(email)
+    if not user:
+        raise HTTPException(status_code=404, detail='User not found')
+    return templates.TemplateResponse('profile.html', {'request': request, 'user': user})

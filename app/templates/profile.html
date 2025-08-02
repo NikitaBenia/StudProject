@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile – Hasanov Rentals</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #c59d5f;
+      --primary-dark: #a67c2f;
+      --secondary-color: #121212;
+      --background-light: #f5f3ef;
+      --text-color: #2c2c2c;
+      --white: #ffffff;
+      --shadow: 0 6px 18px rgba(0,0,0,0.1);
+      --border-radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Playfair Display', serif;
+      background-color: var(--background-light);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding-top: 80px; /* Чтобы контент не залезал под фиксированную шапку */
+    }
+
+    header {
+      background-color: var(--secondary-color);
+      color: var(--white);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      font-family: 'Playfair Display', serif;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: var(--white);
+      font-weight: 500;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+
+    nav ul li a.active,
+    nav ul li a:hover {
+      color: var(--primary-color);
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 1.2rem;
+    }
+
+    .btn-outline,
+    .btn-solid {
+      padding: 0.6rem 1.4rem;
+      border-radius: 14px;
+      font-weight: bold;
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+    }
+
+    .btn-outline {
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      background-color: transparent;
+    }
+
+    .btn-outline:hover {
+      background-color: var(--primary-color);
+      color: var(--white);
+    }
+
+    .btn-solid {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border: none;
+    }
+
+    .btn-solid:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .profile-container {
+      max-width: 850px;
+      margin: 3rem auto;
+      background: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      color: var(--text-color);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .profile-header {
+      background: var(--primary-color);
+      color: var(--white);
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .profile-header img {
+      width: 120px;
+      height: 120px;
+      border-radius: var(--border-radius);
+      object-fit: cover;
+    }
+
+    .profile-user-details h2 {
+      font-size: 2.2rem;
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .profile-user-details p {
+      font-size: 1rem;
+      margin: 0.5rem 0;
+      color: var(--background-light);
+    }
+
+    .balance {
+      background: var(--secondary-color);
+      color: var(--primary-color);
+      padding: 0.6rem 1.2rem;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      display: inline-block;
+      font-weight: bold;
+    }
+
+    .profile-rental {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .profile-rental img {
+      width: 100%;
+      max-width: 400px;
+      height: 240px;
+      object-fit: cover;
+      border-radius: var(--border-radius);
+    }
+
+    .profile-rental-details {
+      flex: 1;
+      background-color: var(--primary-color);
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      color: var(--white);
+    }
+
+    .profile-rental-details h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .profile-rental-details p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: var(--background-light);
+    }
+
+    .rental-dates {
+      display: inline-block;
+      background-color: var(--primary-dark);
+      color: var(--white);
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    footer {
+      background-color: var(--secondary-color);
+      color: var(--white);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      margin-top: 4rem;
+    }
+
+    @media (max-width: 600px) {
+      .profile-header,
+      .profile-rental {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .profile-header img {
+        width: 100px;
+        height: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hasanov Rentals LLC</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="inventory.html">Inventory</a></li>
+        <li><a href="insurance.html">Insurance</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+      <div class="auth-buttons">
+        <a href="login.html" class="btn-outline">Login</a>
+        <a href="signup.html" class="btn-solid">Sign Up</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="profile-container">
+    <div class="profile-header">
+      <img src="/static/images/avatars/{{ user['profile_icon'] }}" alt="User" style="width: 256px; height: 256px;">
+      <div class="profile-user-details">
+        <h2>{{ user['fullname'] }}</h2>
+        <p>{{ user['email'] }}</p>
+        <div class="balance">{{ user['balance'] }}</div>
+      </div>
+    </div>
+
+    <div class="profile-rental">
+      <img src="https://via.placeholder.com/400x240.png?text=Car" alt="Car">
+      <div class="profile-rental-details">
+        <h3>Car Name</h3>
+        <p>100$/day</p>
+        <div class="rental-dates">start_date – end_date</div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Hasanov Rentals LLC. All rights reserved.</p>
+  </footer>
+</body>
+</html>

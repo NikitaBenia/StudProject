@@ -15,6 +15,7 @@ class Base:
         def wrapper(self, *args, **kwargs):
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
+                conn.execute("PRAGMA foreign_keys = ON")  # Enable foreign key constraints
                 result = func(self, cursor, *args, **kwargs)
                 conn.commit()
                 return result
