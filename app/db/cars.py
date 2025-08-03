@@ -22,6 +22,30 @@ class Cars(Base):
         columns = [column[0] for column in cursor.description]
         return [dict(zip(columns, car)) for car in cars]
 
+    @Base.connection
+    def select_filtered_cars(self, cursor, title=None, city=None):
+        query = "SELECT * FROM cars WHERE 1=1"
+        params = []
+
+        if title:
+            query += " AND title LIKE ?"
+            params.append(f"%{title}%")
+
+        if city:
+            query += " AND city = ?"
+            params.append(city)
+
+        cars = cursor.execute(query, params).fetchall()
+
+        columns = [column[0] for column in cursor.description]
+        return [dict(zip(columns, car)) for car in cars]
+
+    @Base.connection
+    def select_all_cities(self, cursor):
+        cities = cursor.execute('SELECT DISTINCT city FROM cars').fetchall()
+        columns = [city[0] for city in cities]
+        return columns
+
 
     @Base.connection
     def select_car_by_title(self, cursor, title: str):

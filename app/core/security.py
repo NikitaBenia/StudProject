@@ -49,7 +49,7 @@ def verify_token(token: str) -> dict:
 def verify_and_return_data(token: str) -> dict | None:
     if token:
         success_verify = verify_token(token)
-        user = users.get_user(email=success_verify['sub'])  # Extract user using subject (email)
+        user = users.get_user(email=success_verify['sub'])  # email stored in 'sub'
         return user
     return None
 

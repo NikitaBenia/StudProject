@@ -1,24 +1,23 @@
 from datetime import timedelta
 
 from pydantic import EmailStr
-from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse, HTMLResponse
-from fastapi import APIRouter, HTTPException, Request, Cookie, Form
+from fastapi import APIRouter, HTTPException, Request, Cookie, Form, UploadFile, File
 
 from app.db.users import users
 from app.schemas.users import User
 from app.core.config import settings
 from app.core.security import create_access_token, verify_token
-from app.services.user_services import authenticate_user, register_user
+from app.services.user_services import authenticate_user, register_user, change_user_avatar
 
 
 router = APIRouter()
-templates = Jinja2Templates(directory=settings.TEMPLATES_URL)
 
 
 # Display login form (GET /login)
 @router.get('/login')
 def login_form(request: Request):
+    from main import templates
     return templates.TemplateResponse('login.html', {'request': request})
 
 
@@ -60,6 +59,7 @@ def get_current_user(token: str = Cookie(None)):
 # Display registration form (GET /register)
 @router.get('/register')
 def register_form(request: Request):
+    from main import templates
     return templates.TemplateResponse('signup.html', {'request': request})
 
 
@@ -75,10 +75,21 @@ def register(fullname: str = Form(...),
 
 # Display user profile page after verifying JWT from cookie
 @router.get('/profile', response_class=HTMLResponse)
-def profile_page(request: Request, token: str = Cookie(None)):
-    payload = get_current_user(token)
+def profile_page(request: Request, access_token: str = Cookie(None)):
+    from main import templates
+    payload = get_current_user(access_token)
     email = payload.get("sub")
     user = users.get_user(email)
     if not user:
         raise HTTPException(status_code=404, detail='User not found')
     return templates.TemplateResponse('profile.html', {'request': request, 'user': user})
+
+
+@router.post('/change_avatar')
+def change_avatar(photo: UploadFile = File(...), access_token: str = Cookie(...)):
+    payload = get_current_user(access_token)
+    email = payload.get("sub")
+    change_user_avatar(email, photo)
+
+    response = RedirectResponse('/profile', status_code=302)
+    return response

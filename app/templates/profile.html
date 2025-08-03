@@ -231,22 +231,28 @@
   </style>
 </head>
 <body>
-  <header>
-    <h1>Hasanov Rentals LLC</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="inventory.html">Inventory</a></li>
-        <li><a href="insurance.html">Insurance</a></li>
-        <li><a href="terms.html">Terms</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-      </ul>
-      <div class="auth-buttons">
-        <a href="login.html" class="btn-outline">Login</a>
-        <a href="signup.html" class="btn-solid">Sign Up</a>
-      </div>
-    </nav>
-  </header>
+    <header>
+      <h1>Hasanov Rentals LLC</h1>
+      <nav>
+        <ul>
+          <li><a href="/" class="active">Home</a></li>
+          <li><a href="/inventory/">Inventory</a></li>
+          <li><a href="/insurance">Insurance</a></li>
+          <li><a href="/terms">Terms</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+        </ul>
+        <div class="auth-buttons">
+          {% if photo %}
+            <a href="/profile">
+              <img src="/static/images/avatars/{{ photo }}" alt="Аватар" style="width: 50px; height: 50px; border-radius: 50%;">
+            </a>
+          {% else %}
+            <a href="/login" class="btn btn-outline">Login</a>
+            <a href="/register" class="btn">Sign Up</a>
+          {% endif %}
+        </div>
+      </nav>
+    </header>
 
   <main class="profile-container">
     <div class="profile-header">
@@ -256,6 +262,10 @@
         <p>{{ user['email'] }}</p>
         <div class="balance">{{ user['balance'] }}</div>
       </div>
+      <form action="/change_avatar" method="post" enctype="multipart/form-data">
+        <input type="file" name="photo" required>
+        <button type="submit">Upload</button>
+      </form>
     </div>
 
     <div class="profile-rental">

@@ -1,12 +1,14 @@
 import uvicorn
-from app.core.config import settings
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Depends
 from fastapi.templating import Jinja2Templates
-from app.core.security import verify_and_return_data
+
+from app.core.config import settings
 from app.api.endpoints.v1.cars import router as car_router
 from app.api.endpoints.v1.users import router, get_current_user
+from app.db.cars import cars
+from app.services.user_services import get_user_page
 
 
 app = FastAPI()
@@ -19,16 +21,20 @@ app.include_router(car_router)
 
 
 @app.get("/", response_class=HTMLResponse)
-def read_main(request: Request):
-    access_token = request.cookies.get("access_token")
-    user = verify_and_return_data(access_token)
-
+def read_main(request: Request, user = Depends(get_user_page)):
     if not user:
-        return templates.TemplateResponse('index.html', {'request': request})
-
-    # Sends user's profile photo path to the template for frontend display and email for profile page link
+        return templates.TemplateResponse(
+            'index.html', {
+                'request': request,
+                'cities': cars.select_all_cities()
+            }
+        )
     return templates.TemplateResponse(
-        'index.html', {'request': request, 'photo': user['profile_icon']}
+        'index.html', {
+            'request': request,
+            'cities': cars.select_all_cities(),
+            'photo': user.get('profile_icon')
+        }
     )
 
 

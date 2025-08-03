@@ -47,7 +47,7 @@ class Users(Base):
 
 
     @Base.connection
-    def change_icon(self, cursor, email: str, photo: str):
+    def change_avatar(self, cursor, email: str, photo: str):
         user = cursor.execute('''
             SELECT * FROM users
             WHERE email = ?

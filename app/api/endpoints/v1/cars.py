@@ -1,17 +1,15 @@
-from fastapi import APIRouter, Form, UploadFile, File, Depends, Request, HTTPException
+from fastapi import APIRouter, Form, UploadFile, File, Depends, Request, HTTPException, Query
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
 
-from app.core.config import settings
 from app.db.cars import cars
 from app.db.cars_specs import cars_specs
 from app.schemas.cars import CarRemoveData, CarSpecs
 from app.services.car_service import add_car as service_add_car
 from app.services.car_service import remove_car as service_remove_car
+from app.services.user_services import get_user_page
 
 
 router = APIRouter()
-templates = Jinja2Templates(directory=settings.TEMPLATES_URL)
 
 
 # Parses car specifications from form data and returns a CarSpecs schema
@@ -72,21 +70,40 @@ def remove_car(data: CarRemoveData):
 
 # Renders the inventory HTML page with the list of all cars
 @router.get("/inventory/", response_class=HTMLResponse)
-def inventory(request: Request):
-    all_cars = cars.select_all_cars()
-    return templates.TemplateResponse("inventory.html", {"request": request, "cars": all_cars})
+def inventory(
+    request: Request,
+    user = Depends(get_user_page),
+    title: str | None = Query(default=None),
+    city: str | None = Query(default=None),
+):
+    from main import templates
+    filtered_cars = cars.select_filtered_cars(title=title, city=city)
+
+    if not user:
+        return templates.TemplateResponse(
+            "inventory.html", {"request": request, "cars": filtered_cars}
+        )
+    return templates.TemplateResponse(
+        "inventory.html", {"request": request, "photo": user.get('profile_icon'), "cars": filtered_cars}
+    )
 
 
 # Renders the details page for a specific car (includes car specs)
 @router.get("/inventory/{car_id}", response_class=HTMLResponse)
-def car_detail(request: Request, car_id: int):
+def car_detail(request: Request, car_id: int, user = Depends(get_user_page)):
+    from main import templates
     car = cars.select_car_by_id(car_id)
     car_specs = cars_specs.select_specs_by_car_id(car_id)
 
     if not car:
         raise HTTPException(status_code=404, detail="Car not found")
 
+    if not user:
+        return templates.TemplateResponse(
+            "car_detail.html",
+            {"request": request, "car": car, "car_specs": car_specs}
+        )
     return templates.TemplateResponse(
         "car_detail.html",
-        {"request": request, "car": car, "car_specs": car_specs}
+        {"request": request, "photo": user.get('profile_icon'), "car": car, "car_specs": car_specs}
     )

@@ -12,20 +12,20 @@
       <h1>Hasanov Rentals LLC</h1>
       <nav>
         <ul>
-          <li><a href="index.html" class="active">Home</a></li>
-          <li><a href="/inventory">Inventory</a></li>
-          <li><a href="insurance.html">Insurance</a></li>
-          <li><a href="terms.html">Terms</a></li>
-          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="/" class="active">Home</a></li>
+          <li><a href="/inventory/">Inventory</a></li>
+          <li><a href="/insurance">Insurance</a></li>
+          <li><a href="/terms">Terms</a></li>
+          <li><a href="/contact">Contact Us</a></li>
         </ul>
         <div class="auth-buttons">
-          {% if photo and email %}
+          {% if photo %}
             <a href="/profile">
               <img src="/static/images/avatars/{{ photo }}" alt="Аватар" style="width: 50px; height: 50px; border-radius: 50%;">
             </a>
           {% else %}
             <a href="/login" class="btn btn-outline">Login</a>
-            <a href="/signup" class="btn">Sign Up</a>
+            <a href="/register" class="btn">Sign Up</a>
           {% endif %}
         </div>
       </nav>
@@ -40,23 +40,29 @@
       <div class="hero-overlay"></div>
 
       <!-- Search Bar overlay on hero -->
-      <div class="search-container">
+      <form action="/inventory/" method="get" class="search-container">
         <div class="search-bar-wrapper">
           <div class="search-bar">
-            <input type="text" placeholder="City, airport, address or hotel" />
-            <button class="search-button">🔍</button>
-            <select class="city-select" aria-label="Choose city">
-              <option value="chicago">Chicago</option>
-              <option value="miami">Miami</option>
+            <!-- Добавляем name, чтобы данные отправлялись -->
+            <input type="text" name="title" placeholder="City, airport, address or hotel" />
+
+            <select name="city" class="city-select" aria-label="Choose city">
+              <option value="">All cities</option>
+              {% for city in cities %}
+                <option value="{{ city }}">{{ city }}</option>
+              {% endfor %}
             </select>
+
+            <button class="search-button" type="submit">🔍</button>
           </div>
         </div>
-      </div>
+      </form>
+
 
       <div class="hero-content">
         <h2>Drive in Style with Hasanov Rentals LLC</h2>
         <p>Premium car rental in Chicago with a fleet of luxury and exotic vehicles.</p>
-        <a href="inventory.html" class="btn">Browse Fleet</a>
+        <a href="/inventory/" class="btn">Browse Fleet</a>
       </div>
     </section>
 

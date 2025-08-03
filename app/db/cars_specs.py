@@ -26,6 +26,7 @@ class CarsSpecs(Base):
             )
         ''')
 
+
     @Base.connection
     def select_specs_by_car_id(self, cursor, car_id: int):
         specs = cursor.execute('SELECT * FROM cars_specs WHERE car_id = ?', (car_id,)).fetchone()
@@ -33,6 +34,7 @@ class CarsSpecs(Base):
             return None
         columns = [column[0] for column in cursor.description]
         return dict(zip(columns, specs))
+
 
     @Base.connection
     def add_specs(self, cursor, car_id: int, engine: str, horsepower: int, torque: int, mph: float,
@@ -50,6 +52,7 @@ class CarsSpecs(Base):
             transmission, drivetrain, hybrid_system, technology,
             audio, interior, lighting, comfort, exterior
         ))
+
 
     @Base.connection
     def remove_specs(self, cursor, car_id: int):

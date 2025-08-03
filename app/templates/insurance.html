@@ -7,22 +7,28 @@
   <link rel="stylesheet" href="static/css/style.css" />
 </head>
 <body>
-  <header>
-    <h1>Hasanov Rentals LLC</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="inventory.html">Inventory</a></li>
-        <li><a href="insurance.html" class="active">Insurance</a></li>
-        <li><a href="terms.html">Terms</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-      </ul>
-      <div class="auth-buttons">
-        <a href="login.html" class="btn btn-outline">Login</a>
-        <a href="signup.html" class="btn">Sign Up</a>
-      </div>
-    </nav>
-  </header>
+    <header>
+      <h1>Hasanov Rentals LLC</h1>
+      <nav>
+        <ul>
+          <li><a href="/" class="active">Home</a></li>
+          <li><a href="/inventory/">Inventory</a></li>
+          <li><a href="/insurance">Insurance</a></li>
+          <li><a href="/terms">Terms</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+        </ul>
+        <div class="auth-buttons">
+          {% if photo %}
+            <a href="/profile">
+              <img src="/static/images/avatars/{{ photo }}" alt="Аватар" style="width: 50px; height: 50px; border-radius: 50%;">
+            </a>
+          {% else %}
+            <a href="/login" class="btn btn-outline">Login</a>
+            <a href="/register" class="btn">Sign Up</a>
+          {% endif %}
+        </div>
+      </nav>
+    </header>
 
   <section class="inventory-header">
     <h2>Insurance Information</h2>
