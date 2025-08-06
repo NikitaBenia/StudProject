@@ -17,6 +17,7 @@ class UserDataForm(BaseModel):
     email: EmailStr
     password: str
 
+
 class UserProfile(BaseModel):
     id: int
     fullname: str

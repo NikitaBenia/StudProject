@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,15 +7,14 @@
     <title>Inventory - Hasanov Rentals LLC</title>
     <link rel="stylesheet" href="/static/css/style.css" />
     <style>
-      /* Custom styles for 3-column larger cards with visible buttons */
       .car-grid {
+        display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 30px;
+        padding: 40px;
       }
-      
       .car-card {
         min-height: 500px;
-        height: auto;
         display: flex;
         flex-direction: column;
         border: 1px solid #eee;
@@ -22,104 +22,91 @@
         overflow: hidden;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       }
-      
       .car-card img {
         height: 250px;
         width: 100%;
         object-fit: cover;
       }
-      
       .car-card-content {
         padding: 25px;
         flex: 1;
         display: flex;
         flex-direction: column;
       }
-      
       .car-card h3 {
         font-size: 1.6rem;
         margin-bottom: 15px;
       }
-      
       .car-card p {
         font-size: 1.1rem;
         line-height: 1.7;
         margin-bottom: 20px;
         flex-grow: 1;
       }
-      
       .car-price {
         font-size: 1.3rem;
         font-weight: bold;
         color: var(--primary-color);
         margin-bottom: 20px;
       }
-      
       .car-card .btn {
         padding: 12px 30px;
         font-size: 1.1rem;
         margin-top: auto;
         align-self: flex-start;
       }
-      
       @media (max-width: 1024px) {
         .car-grid {
           grid-template-columns: repeat(2, 1fr);
         }
       }
-      
       @media (max-width: 768px) {
         .car-grid {
           grid-template-columns: 1fr;
         }
-        .inventory-header-video {
-  position: relative;
-  height: 400px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  text-align: center;
-}
-
-.inventory-header-video video {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  transform: translate(-50%, -50%);
-  filter: brightness(40%); /* Makes it darker, like a black tint */
-  object-fit: cover;
-  z-index: 1;
-}
-
-.header-overlay {
-  position: relative;
-  z-index: 2;
-  padding: 0 20px;
-}
-
-.header-overlay h2 {
-  font-size: 2.5rem;
-  margin-bottom: 15px;
-}
-
-.header-overlay p {
-  font-size: 1.2rem;
-}
+      }
+      .inventory-header-video {
+        position: relative;
+        height: 400px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+      }
+      .inventory-header-video video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        transform: translate(-50%, -50%);
+        filter: brightness(40%);
+        object-fit: cover;
+        z-index: 1;
+      }
+      .header-overlay {
+        position: relative;
+        z-index: 2;
+        padding: 0 20px;
+      }
+      .header-overlay h2 {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+      }
+      .header-overlay p {
+        font-size: 1.2rem;
       }
     </style>
   </head>
-<body>
-  <!-- Navigation Bar -->
+  <body>
     <header>
       <h1>Hasanov Rentals LLC</h1>
       <nav>
         <ul>
-          <li><a href="/" class="active">Home</a></li>
-          <li><a href="/inventory/">Inventory</a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="/inventory/" class="active">Inventory</a></li>
           <li><a href="/insurance">Insurance</a></li>
           <li><a href="/terms">Terms</a></li>
           <li><a href="/contact">Contact Us</a></li>
@@ -127,7 +114,7 @@
         <div class="auth-buttons">
           {% if photo %}
             <a href="/profile">
-              <img src="/static/images/avatars/{{ photo }}" alt="Аватар" style="width: 50px; height: 50px; border-radius: 50%;">
+              <img src="/static/images/avatars/{{ photo }}" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%;">
             </a>
           {% else %}
             <a href="/login" class="btn btn-outline">Login</a>
@@ -137,36 +124,33 @@
       </nav>
     </header>
 
-  <!-- Inventory Header -->
-  <section class="inventory-header-video">
-    <video autoplay muted loop playsinline>
-      <source src="/static/images/media/fleet.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-    <div class="header-overlay">
-      <h2>Our Premium Fleet</h2>
-      <p>Experience the finest selection of luxury and performance vehicles in Chicago</p>
-    </div>
-  </section>
-
-  <!-- Car Grid - 3 per row -->
-  <section class="car-grid">
-    {% for car in cars %}
-    <div class="car-card">
-      <img src="/static/images/autos/{{ car['photo'] }}" alt="{{ car['title'] }}">
-      <div class="car-card-content">
-        <h3>{{ car['title'] }}</h3>
-        <p>{{ car['description'] }}</p>
-        <div class="car-price">{{ car['price'] }}/day</div>
-        <a href="/inventory/{{ car['id'] }}" class="btn">View Details</a>
+    <section class="inventory-header-video">
+      <video autoplay muted loop playsinline>
+        <source src="/static/images/media/fleet.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div class="header-overlay">
+        <h2>Our Premium Fleet</h2>
+        <p>Experience the finest selection of luxury and performance vehicles in Chicago</p>
       </div>
-    </div>
-    {% endfor %}
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Hasanov Rentals LLC. All rights reserved.</p>
-  </footer>
-</body>
+    <section class="car-grid">
+      {% for car in cars %}
+      <div class="car-card">
+        <img src="/static/images/autos/{{ car.photo }}" alt="{{ car.title }}">
+        <div class="car-card-content">
+          <h3>{{ car.title }}</h3>
+          <p>{{ car.description }}</p>
+          <div class="car-price">${{ car.price }}/day</div>
+          <a href="/inventory/{{ car.id }}" class="btn">View Details</a>
+        </div>
+      </div>
+      {% endfor %}
+    </section>
+
+    <footer>
+      <p>&copy; 2025 Hasanov Rentals LLC. All rights reserved.</p>
+    </footer>
+  </body>
 </html>

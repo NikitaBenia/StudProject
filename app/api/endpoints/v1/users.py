@@ -2,16 +2,15 @@ from datetime import timedelta
 
 from pydantic import EmailStr
 from fastapi.responses import RedirectResponse, HTMLResponse
-from fastapi import APIRouter, HTTPException, Request, Cookie, Form, UploadFile, File
+from fastapi import APIRouter, HTTPException, Request, Form, UploadFile, File, Depends
 
-from app.db.users import users
 from app.schemas.users import User
 from app.core.config import settings
-from app.core.security import create_access_token, verify_token
-from app.services.user_services import authenticate_user, register_user, change_user_avatar
+from app.core.security import create_access_token
+from app.services.user_services import authenticate_user, register_user, change_user_avatar, get_user_page
 
 
-router = APIRouter()
+router = APIRouter(tags=['User System'])
 
 
 # Display login form (GET /login)
@@ -46,16 +45,6 @@ def login(email: EmailStr = Form(...),
     return response
 
 
-# Decode and verify token from cookie, return payload or raise exception
-def get_current_user(token: str = Cookie(None)):
-    if not token:
-        raise HTTPException(status_code=401, detail="Not authenticated")
-    payload = verify_token(token)
-    if not payload:
-        raise HTTPException(status_code=401, detail="Invalid or expired token")
-    return payload
-
-
 # Display registration form (GET /register)
 @router.get('/register')
 def register_form(request: Request):
@@ -75,21 +64,22 @@ def register(fullname: str = Form(...),
 
 # Display user profile page after verifying JWT from cookie
 @router.get('/profile', response_class=HTMLResponse)
-def profile_page(request: Request, access_token: str = Cookie(None)):
+def profile_page(request: Request, user = Depends(get_user_page)):
     from main import templates
-    payload = get_current_user(access_token)
-    email = payload.get("sub")
-    user = users.get_user(email)
     if not user:
         raise HTTPException(status_code=404, detail='User not found')
-    return templates.TemplateResponse('profile.html', {'request': request, 'user': user})
+
+    return templates.TemplateResponse('profile.html', {
+        'request': request, 'user': user['user'], 'rentals': user['rentals']
+    })
 
 
+# Handle change the avatar of user, upload it to DataBase and response new profile
 @router.post('/change_avatar')
-def change_avatar(photo: UploadFile = File(...), access_token: str = Cookie(...)):
-    payload = get_current_user(access_token)
-    email = payload.get("sub")
-    change_user_avatar(email, photo)
+def change_avatar(photo: UploadFile = File(...), user = Depends(get_user_page)):
+    if not user:
+        return RedirectResponse('/login', status_code=302)
 
+    change_user_avatar(user['user'].get('email'), photo)
     response = RedirectResponse('/profile', status_code=302)
     return response

@@ -1,8 +1,10 @@
+from datetime import datetime
 from uuid import uuid4
 from fastapi import HTTPException, Request, UploadFile, File
 from pydantic import EmailStr
 
 from app.core.config import settings
+from app.db.rentals import rentals
 from app.schemas.users import User
 from app.core.security import verify_password, verify_and_return_data
 from app.db.users import users
@@ -70,13 +72,22 @@ def change_user_avatar(email: EmailStr, photo: UploadFile = File(...)):
 
 def get_user_page(request: Request):
     """
-    Give the user found by access_token.
+    Gets the user if he is already login.
 
-    - Check that token has not expired
-    - Returning user or None if token was expired
+    - Get and verify access token
+    - Update the rental data
     """
     access_token = request.cookies.get("access_token")
     user = verify_and_return_data(access_token)
+
     if not user:
         return None
-    return user
+
+    user_id = user.get('id')
+    today = datetime.utcnow()
+
+    rentals.update_expired_rentals(user_id=user_id, today=today)
+
+    users_rentals = rentals.select_users_rentals(user_id=user_id)
+
+    return {'user': user, 'rentals': users_rentals}

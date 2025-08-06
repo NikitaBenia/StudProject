@@ -47,6 +47,18 @@ class Users(Base):
 
 
     @Base.connection
+    def get_user_by_id(self, cursor, id: int):
+        user = cursor.execute('''
+            SELECT * FROM users
+            WHERE id = ?
+        ''', (id,)).fetchone()
+
+        if not user:
+            return None
+        columns = [column[0] for column in cursor.description]
+        return dict(zip(columns, user))
+
+    @Base.connection
     def change_avatar(self, cursor, email: str, photo: str):
         user = cursor.execute('''
             SELECT * FROM users
@@ -61,6 +73,23 @@ class Users(Base):
             SET profile_icon = ?
             WHERE email = ?
         ''', (photo, email))
+
+    @Base.connection
+    def change_balance(self, cursor, email: str, balance: float):
+        user = cursor.execute('''
+            SELECT * FROM users
+            WHERE email = ?
+        ''', (email,)).fetchone()
+
+        if not user:
+            return None
+
+        cursor.execute('''
+            UPDATE users
+            SET balance = ?
+            WHERE email = ?
+        ''', (balance, email))
+
 
 users = Users()
 users.create_tables()

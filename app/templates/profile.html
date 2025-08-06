@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Profile – Hasanov Rentals</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --primary-color: #c59d5f;
@@ -14,6 +15,16 @@
       --white: #ffffff;
       --shadow: 0 6px 18px rgba(0,0,0,0.1);
       --border-radius: 12px;
+    }
+
+    html, body {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1;
     }
 
     * {
@@ -27,7 +38,7 @@
       background-color: var(--background-light);
       color: var(--text-color);
       line-height: 1.6;
-      padding-top: 80px; /* Чтобы контент не залезал под фиксированную шапку */
+      padding-top: 80px;
     }
 
     header {
@@ -82,21 +93,19 @@
       gap: 1.2rem;
     }
 
-    .btn-outline,
-    .btn-solid {
+    .btn-outline {
       padding: 0.6rem 1.4rem;
       border-radius: 14px;
       font-weight: bold;
-      text-decoration: none;
       font-family: 'Montserrat', sans-serif;
       font-size: 1.05rem;
-      transition: all 0.3s;
-    }
-
-    .btn-outline {
+      text-decoration: none;
       border: 2px solid var(--primary-color);
       color: var(--primary-color);
       background-color: transparent;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-block;
     }
 
     .btn-outline:hover {
@@ -107,7 +116,16 @@
     .btn-solid {
       background-color: var(--primary-color);
       color: var(--white);
+      border-radius: 14px;
+      font-weight: bold;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      padding: 0.6rem 1.4rem;
       border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-decoration: none;
+      display: inline-block;
     }
 
     .btn-solid:hover {
@@ -120,7 +138,7 @@
       background: var(--white);
       border-radius: var(--border-radius);
       box-shadow: var(--shadow);
-      overflow: hidden;
+      overflow: auto;
       color: var(--text-color);
       font-family: 'Montserrat', sans-serif;
     }
@@ -228,54 +246,111 @@
         height: 100px;
       }
     }
+
+    form[action="/change_avatar"] {
+      margin-left: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      position: relative;
+    }
+
+    form[action="/change_avatar"] input[type="file"] {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+
+    .btn-choose-file {
+      padding: 0.6rem 1.4rem;
+      border-radius: 14px;
+      font-weight: bold;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      text-decoration: none;
+      border: 3px solid #d8b974;
+      color: #c59d5f;
+      background-color: #121212;
+      cursor: pointer;
+      user-select: none;
+      display: inline-block;
+      transition: none;
+      white-space: nowrap;
+      min-width: 150px;
+      text-align: center;
+    }
+
+    form[action="/change_avatar"] button {
+      padding: 0.6rem 1.4rem;
+      border-radius: 14px;
+      font-weight: bold;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      text-decoration: none;
+      border: 3px solid #d8b974;
+      color: #c59d5f;
+      background-color: #121212;
+      cursor: pointer;
+      transition: none;
+      display: inline-block;
+    }
   </style>
 </head>
 <body>
-    <header>
-      <h1>Hasanov Rentals LLC</h1>
-      <nav>
-        <ul>
-          <li><a href="/" class="active">Home</a></li>
-          <li><a href="/inventory/">Inventory</a></li>
-          <li><a href="/insurance">Insurance</a></li>
-          <li><a href="/terms">Terms</a></li>
-          <li><a href="/contact">Contact Us</a></li>
-        </ul>
-        <div class="auth-buttons">
-          {% if photo %}
-            <a href="/profile">
-              <img src="/static/images/avatars/{{ photo }}" alt="Аватар" style="width: 50px; height: 50px; border-radius: 50%;">
-            </a>
-          {% else %}
-            <a href="/login" class="btn btn-outline">Login</a>
-            <a href="/register" class="btn">Sign Up</a>
-          {% endif %}
-        </div>
-      </nav>
-    </header>
+  <header>
+    <h1>Hasanov Rentals LLC</h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/inventory/">Inventory</a></li>
+        <li><a href="/insurance">Insurance</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/contact">Contact Us</a></li>
+      </ul>
+      <div class="auth-buttons">
+          <a href="/profile">
+            <img src="/static/images/avatars/{{ user.profile_icon }}" alt="Аватар" style="width: 50px; height: 50px; border-radius: 50%;" />
+          </a>
+      </div>
+    </nav>
+  </header>
 
   <main class="profile-container">
     <div class="profile-header">
-      <img src="/static/images/avatars/{{ user['profile_icon'] }}" alt="User" style="width: 256px; height: 256px;">
+      <img
+        src="/static/images/avatars/{{ user.profile_icon }}"
+        alt="User"
+        style="width: 256px; height: 256px; border-radius: var(--border-radius); object-fit: cover;"
+      />
       <div class="profile-user-details">
-        <h2>{{ user['fullname'] }}</h2>
-        <p>{{ user['email'] }}</p>
-        <div class="balance">{{ user['balance'] }}</div>
+        <h2>{{ user.fullname }}</h2>
+        <p>{{ user.email }}</p>
+        <div class="balance">{{ user.balance }}</div>
       </div>
       <form action="/change_avatar" method="post" enctype="multipart/form-data">
-        <input type="file" name="photo" required>
-        <button type="submit">Upload</button>
+        <input type="file" name="photo" id="file-upload" required />
+        <label for="file-upload" class="btn-choose-file">Choose avatar</label>
+        <button type="submit">Upload avatar</button>
       </form>
     </div>
 
+    {% for car in rentals %}
     <div class="profile-rental">
-      <img src="https://via.placeholder.com/400x240.png?text=Car" alt="Car">
+      <img src="/static/images/autos/{{ car.photo }}" alt="Car" />
       <div class="profile-rental-details">
-        <h3>Car Name</h3>
-        <p>100$/day</p>
-        <div class="rental-dates">start_date – end_date</div>
+        <h3>{{ car.title }}</h3>
+        <p>{{ car.price }}/day</p>
+        <div class="rental-dates">{{ car.start_time[:10] }} → {{ car.end_time[:10] }}</div>
+        <div class="status">{{ car.status }}</div>
       </div>
     </div>
+    {% endfor %}
   </main>
 
   <footer>

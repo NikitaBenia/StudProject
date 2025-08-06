@@ -22,23 +22,37 @@ class Cars(Base):
         columns = [column[0] for column in cursor.description]
         return [dict(zip(columns, car)) for car in cars]
 
+
     @Base.connection
-    def select_filtered_cars(self, cursor, title=None, city=None):
-        query = "SELECT * FROM cars WHERE 1=1"
+    def select_filtered_cars(self, cursor, user_id, title=None, city=None):
+        query = """
+            SELECT * FROM cars c
+            WHERE 1=1
+        """
         params = []
 
         if title:
-            query += " AND title LIKE ?"
+            query += " AND c.title LIKE ?"
             params.append(f"%{title}%")
 
         if city:
-            query += " AND city = ?"
+            query += " AND c.city = ?"
             params.append(city)
 
-        cars = cursor.execute(query, params).fetchall()
+        query += """
+            AND NOT EXISTS (
+                SELECT 1 FROM rentals r
+                WHERE r.car_id = c.id
+                  AND r.user_id = ?
+                  AND r.status = 'active'
+            )
+        """
+        params.append(user_id)
 
+        cars = cursor.execute(query, params).fetchall()
         columns = [column[0] for column in cursor.description]
         return [dict(zip(columns, car)) for car in cars]
+
 
     @Base.connection
     def select_all_cities(self, cursor):

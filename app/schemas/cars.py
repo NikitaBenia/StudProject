@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class CarSpecs(BaseModel):
     engine: str
     horsepower: int
@@ -16,12 +17,14 @@ class CarSpecs(BaseModel):
     comfort: str
     exterior: str
 
+
 class CarCreate(BaseModel):
     title: str
     description: str
     city: str
     price: float
     specs: CarSpecs
+
 
 class CarRemoveData(BaseModel):
     id: int

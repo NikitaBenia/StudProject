@@ -6,7 +6,9 @@ from fastapi.templating import Jinja2Templates
 
 from app.core.config import settings
 from app.api.endpoints.v1.cars import router as car_router
-from app.api.endpoints.v1.users import router, get_current_user
+from app.api.endpoints.v1.rentals import router as rental_router
+from app.api.endpoints.v1.info import router as info_router
+from app.api.endpoints.v1.users import router
 from app.db.cars import cars
 from app.services.user_services import get_user_page
 
@@ -18,6 +20,8 @@ templates = Jinja2Templates(directory=settings.TEMPLATES_URL)
 
 app.include_router(router)
 app.include_router(car_router)
+app.include_router(rental_router)
+app.include_router(info_router)
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -33,14 +37,9 @@ def read_main(request: Request, user = Depends(get_user_page)):
         'index.html', {
             'request': request,
             'cities': cars.select_all_cities(),
-            'photo': user.get('profile_icon')
+            'photo': user['user'].get('profile_icon')
         }
     )
-
-
-@app.get("/protected", response_class=HTMLResponse)
-def protected_auth(request: Request, user: str = Depends(get_current_user)):
-    return templates.TemplateResponse("index.html", {"request": request, "user": user})
 
 
 if __name__ == '__main__':

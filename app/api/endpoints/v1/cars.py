@@ -1,5 +1,8 @@
-from fastapi import APIRouter, Form, UploadFile, File, Depends, Request, HTTPException, Query
+from datetime import datetime, timedelta
+
+from fastapi import APIRouter, Form, UploadFile, File, Depends, Request, HTTPException, Query, Cookie
 from fastapi.responses import HTMLResponse
+from fastapi.responses import RedirectResponse
 
 from app.db.cars import cars
 from app.db.cars_specs import cars_specs
@@ -9,7 +12,7 @@ from app.services.car_service import remove_car as service_remove_car
 from app.services.user_services import get_user_page
 
 
-router = APIRouter()
+router = APIRouter(tags=['Cars System'])
 
 
 # Parses car specifications from form data and returns a CarSpecs schema
@@ -77,14 +80,13 @@ def inventory(
     city: str | None = Query(default=None),
 ):
     from main import templates
-    filtered_cars = cars.select_filtered_cars(title=title, city=city)
 
     if not user:
-        return templates.TemplateResponse(
-            "inventory.html", {"request": request, "cars": filtered_cars}
-        )
+        return RedirectResponse('/login')
+
+    filtered_cars = cars.select_filtered_cars(user_id=user['user'].get('id'), title=title, city=city)
     return templates.TemplateResponse(
-        "inventory.html", {"request": request, "photo": user.get('profile_icon'), "cars": filtered_cars}
+        "inventory.html", {"request": request, "photo": user['user'].get('profile_icon'), "cars": filtered_cars}
     )
 
 
@@ -95,15 +97,34 @@ def car_detail(request: Request, car_id: int, user = Depends(get_user_page)):
     car = cars.select_car_by_id(car_id)
     car_specs = cars_specs.select_specs_by_car_id(car_id)
 
+    current_date = datetime.today()
+    tomorrow_date = current_date + timedelta(days=1)
+
+    current_date_str = current_date.date().isoformat()
+    tomorrow_date_str = tomorrow_date.date().isoformat()
+
     if not car:
         raise HTTPException(status_code=404, detail="Car not found")
 
     if not user:
         return templates.TemplateResponse(
             "car_detail.html",
-            {"request": request, "car": car, "car_specs": car_specs}
+            {
+                "request": request,
+                "car": car,
+                "car_specs": car_specs,
+                "current_date": current_date_str,
+                "tomorrow_date": tomorrow_date_str
+            }
         )
     return templates.TemplateResponse(
         "car_detail.html",
-        {"request": request, "photo": user.get('profile_icon'), "car": car, "car_specs": car_specs}
+        {
+            "request": request,
+            "photo": user['user'].get('profile_icon'),
+            "car": car,
+            "car_specs": car_specs,
+            "current_date": current_date_str,
+            "tomorrow_date": tomorrow_date_str
+        }
     )
