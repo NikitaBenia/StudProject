@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Query, HTTPException, Form, Cookie, Depends
+from fastapi import APIRouter, Request, Query, HTTPException, Form, Depends
 from fastapi.responses import RedirectResponse, HTMLResponse
 
 from app.db.users import users
@@ -45,17 +45,18 @@ def add_rental(
     car_id: int = Form(...),
     start_time: str = Form(...),
     end_time: str = Form(...),
+    fullname: str = Form(...),
     email: str = Form(...),
     user = Depends(get_user_page)
 ):
     if not user:
         return RedirectResponse('/login', status_code=302)
 
-    existing_user = users.get_user(email=email)
+    existing_user = users.get_user_by_email_and_fullname(fullname=fullname, email=email)
     if not existing_user:
         raise HTTPException(
             status_code=404,
-            detail="User with provided email not found"
+            detail="User with provided email and fullname not found"
         )
 
     full_price = get_full_price(car_id, start_time, end_time)

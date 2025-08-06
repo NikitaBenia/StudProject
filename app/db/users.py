@@ -47,6 +47,19 @@ class Users(Base):
 
 
     @Base.connection
+    def get_user_by_email_and_fullname(self, cursor, fullname: str, email: str):
+        user = cursor.execute('''
+            SELECT * FROM users
+            WHERE email = ? AND fullname = ?
+        ''', (email, fullname)).fetchone()
+
+        if not user:
+            return None
+        columns = [column[0] for column in cursor.description]
+        return dict(zip(columns, user))
+
+
+    @Base.connection
     def get_user_by_id(self, cursor, id: int):
         user = cursor.execute('''
             SELECT * FROM users
